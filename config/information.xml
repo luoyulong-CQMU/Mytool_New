@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<data>
+  <application name="Mytool">
+    <auther>十号风球</auther>
+    <updatetime>2021-08-01</updatetime>
+    <host>10.61.28.66</host>
+    <port>5002</port>
+    <ver>3.5.4</ver>
+      <github>https://github.com/luoyulong-CQMU/newtool</github>
+  </application>
+</data>
