@@ -6,8 +6,8 @@
 from interval import Interval
 from PyQt5.QtGui import QIntValidator, QDoubleValidator
 from PyQt5.QtWidgets import QApplication, QMessageBox, QDialog,QMainWindow
-from unit.MAINUI import *
-from unit.Setting import *
+from unit.blood_gas_main_window import *
+from unit.setting import *
 
 
 class BloodGas(Ui_mainWindow):

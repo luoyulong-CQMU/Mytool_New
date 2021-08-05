@@ -7,14 +7,13 @@ import tkinter as tk
 from tkinter import messagebox, ttk, Scrollbar
 from PIL import Image, ImageTk
 # # import ctypes
-from unit.OutpatientLog import *
+from unit.outpatient_log import *
 from unit.BloodGas import *
-from unit.discharge import *
+from unit.discharge_follow_up import *
 from unit.report_card import *
-from unit.settingdiag import *
 from unit.database import *
-from unit.copd import *
-from unit.Card import *
+from unit.copd_report_card import *
+from unit.hospitalization_certificate import *
 from game_unit.gameModule import *
 from update_unit.update_client import Update
 
@@ -54,7 +53,7 @@ class CaseTool(object):
                           command=lambda: ReportCard().quality(out_message))
         btn_3 = tk.Button(frame1, text='住院证打印', font=('Arial', 10), width=15, height=2,
                           activebackground='Lightblue',
-                          command=lambda: PrindPainIdCard().draw_mainwindow(out_message))
+                          command=lambda: HospitalizationCertificate().draw_mainwindow(out_message))
         btn_4 = tk.Button(frame1, text='GameTest', font=('Arial', 10), width=15, height=2,
                           activebackground='Lightblue', command=lambda: GameSelect().draw_main_window(top_level))
         btn_1.place(x=50, y=10)
@@ -110,12 +109,12 @@ class SettingWindow(object):
         height1 = 500
         alignstr = '%dx%d+%d+%d' % (width1, height1, (screenwidth - width1) / 2, (screenheight - height1) / 2)
         top_level.geometry(alignstr)
-        frame_1 = tk.Frame(top_level, borderwidth=2, width=500, height=50, relief="sunken")
-        frame_2 = tk.Frame(top_level, borderwidth=2, width=500, height=370, relief="sunken")
-        frame_3 = tk.Frame(top_level, borderwidth=2, width=130, height=420, relief="sunken")
-        frame_1.place(x=30, y=30)
-        frame_2.place(x=30, y=100)
-        frame_3.place(x=550, y=30)
+        frame_1 = tk.Frame(top_level, borderwidth=2, width=492, height=50, relief="groove")
+        frame_2 = tk.Frame(top_level, borderwidth=2, width=500, height=370, relief="groove")
+        frame_3 = tk.Frame(top_level, borderwidth=2, width=130, height=420, relief="groove")
+        frame_1.place(x=30, y=30)   # 上方修改条
+        frame_2.place(x=30, y=100) # 左下选择父框架
+        frame_3.place(x=550, y=30) # 右侧按钮父框架
         doctor_name = tk.StringVar()
         doctor_name.set(f'默认姓名(输入要修改的内容点击修改):')
         name_lab = tk.Label(frame_1, width=30, height=1, textvariable=doctor_name)
@@ -130,13 +129,13 @@ class SettingWindow(object):
         btn_5 = tk.Button(frame_3, width=10, height=1, text="修改", command=self.modify)
         btn_6 = tk.Button(frame_3, width=10, height=1, text="删除", command=self.del_)
         btn_7 = tk.Button(frame_3, width=10, height=1, text="帮助", command=self.help)
-        btn_1.place(relx=0.1, rely=0.01)
-        btn_2.place(relx=0.1, rely=0.15)
-        btn_3.place(relx=0.1, rely=0.3)
-        btn_4.place(relx=0.1, rely=0.45)
-        btn_5.place(relx=0.1, rely=0.6)
-        btn_6.place(relx=0.1, rely=0.75)
-        btn_7.place(relx=0.1, rely=0.9)
+        btn_1.place(relx=0.17, rely=0.01)
+        btn_2.place(relx=0.17, rely=0.15)
+        btn_3.place(relx=0.17, rely=0.3)
+        btn_4.place(relx=0.17, rely=0.45)
+        btn_5.place(relx=0.17, rely=0.6)
+        btn_6.place(relx=0.17, rely=0.75)
+        btn_7.place(relx=0.17, rely=0.9)
         self.tree = ttk.Treeview(frame_2, height=16)
         self.tree.column("#0", width=465, anchor="center")
         keywords_and_chief = DiagMatch().read_db()  # keywords_and_chief 为数据库返回的列表;包含多个元组（keywords,chief）
@@ -386,7 +385,7 @@ def change_arrow(button):
 def main():
     window = tk.Tk()
     window.configure(bg='#393939')
-    window.title('Mytool4.0')
+    window.title('Mytool 4.0.5')
     window.resizable(width=False, height=False)
     screen_width = window.winfo_screenwidth()
     screen_height = window.winfo_screenheight()
@@ -424,12 +423,12 @@ def main():
                     bg='#282828',
                     activebackground='#1f5383',
                     command=lambda: SettingWindow().draw_main_window(main_window=window))
-    bt1.place(x=50, y=20)
-    bt2.place(x=50, y=90)
-    bt3.place(x=50, y=160)
-    bt4.place(x=300, y=20)
-    bt5.place(x=300, y=90)
-    bt6.place(x=300, y=160)
+    bt1.place(x=55, y=20)
+    bt2.place(x=55, y=90)
+    bt3.place(x=55, y=160)
+    bt4.place(x=310, y=20)
+    bt5.place(x=310, y=90)
+    bt6.place(x=310, y=160)
     bt1.bind("<Enter>", change_arrow(bt1))
     bt2.bind("<Enter>", change_arrow(bt2))
     bt3.bind("<Enter>", change_arrow(bt3))

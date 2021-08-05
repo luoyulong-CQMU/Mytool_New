@@ -227,13 +227,14 @@ def data_base(name="张三", gender="男", id_="123456", rtime_=None, ctime_=Non
     conn = sqlite3.connect("pain_info.db")
     cursor = conn.cursor()
     try:
-        cursor.execute("create table info(name, gender, id_  primary key,rtime,ctime,diag_ varchar(255))")
+        cursor.execute("create table info(name, gender, id_ primary key,rtime,ctime,diag_ varchar(255))")
     except:
         # print('table 已存在')
         pass
     try:
         cursor.execute("insert into info (name, gender, id_,rtime,ctime,diag_) values (?, ?,?,?,?,?)",
-                       (name.strip(b'\x00'.decode()), gender.strip(b'\x00'.decode()), id_.strip(b'\x00'.decode()), rtime_, ctime_, diag_.strip(b'\x00'.decode())))
+                       (name.strip(b'\x00'.decode()), gender.strip(b'\x00'.decode()), id_.strip(b'\x00'.decode()),
+                        rtime_, ctime_, diag_.strip(b'\x00'.decode())))
         # print(f"-->{name} 信息写入成功！")
     except Exception as e:
         # print(e)
@@ -290,29 +291,7 @@ class ReportCard(object):
             self.out_message.set('你似乎选错了对象！')
             # print("Error:你似乎选错了对象，请确认\n")
         else:
-            # print("\n-----------------------------------")
-            # print('找到患者信息：')
-            # # print(self.pain_name)
-            #
-            # print("姓名：%s" % self.pain_name, "性别：%s" % self.pain_gender, "年龄：%s" % self.pain_year,
-            #       "住院号：%s" % self.pain_id)
-            self.out_message.set(f'姓名:{self.pain_name.ljust(8," ")}||ID:{self.pain_id}"')
-
-            #      f'|  住院号:{self.pain_id} |年龄:{self.pain_year}\t|\r\n'
-            #      # f'|  住院号:{self.pain_id} \t|\r\n'
-            #       '+-------------------------------+'
-            # )
-
-            # print(f'''
-            # +-------------------------------+
-            # |  找到患者信息：                  |
-            # +-------------------------------+
-            # |  姓名:{self.pain_name}                    |
-            # |  性别:{self.pain_gender}                       |
-            # |  年龄:{self.pain_year}                       |
-            # |  住院号:{self.pain_id}                |
-            # +-------------------------------+
-            # ''')
+            self.out_message.set(f'姓名:{self.pain_name.ljust(8, " ")}||ID:{self.pain_id}"')
             # 处理年、月、日格式格式；
             self.rY = int(self.pain_in_time[0:4])
             self.rm = int(self.pain_in_time[5:7])
@@ -321,15 +300,6 @@ class ReportCard(object):
             day = find[0]
             self.rtime = datetime.date(self.rY, self.rm, self.rd)
             self.ctime = self.rtime + datetime.timedelta(days=int(day))
-            # print(
-            #     # '+-------------------------------+\r\n'
-            #     f'|  入院时间：{str(self.rtime).ljust(19," ")}|\r\n'
-            #     f'|  出院时间：{str(self.ctime).ljust(19," ")}|\r\n'
-            #     '+-------------------------------+'
-            # )
-            # print("入院时间：", self.rtime)
-            # print("出院时间：", self.ctime)
-            # print("-----------------------------------\n")
             icd = 'config/ICD10.xls'
             icd10 = []
             workbook = xlrd.open_workbook(icd)
@@ -370,16 +340,13 @@ class ReportCard(object):
                        self.rtime, self.rm, self.rd,
                        self.pain_gender, self.pain_year,
                        self.diag1, self.ctime)
-        select = messagebox.askyesno(title='请确认',message=f'准备打印，请放入纸张，并确认信息【{self.pain_name}】是否正确？')
-        # select = input("准备打印，请放入纸张，并确认信息是否正确？ [Y/n]: ")
-        # if select == "n" or select == "no" or select == "N":
+        select = messagebox.askyesno(title='请确认', message=f'准备打印，请放入纸张，并确认信息【{self.pain_name}】是否正确？')
         if select:
             print_pain_info()
         else:
             self.out_message.set('你取消了打印！')
 
-
-    def quality(self,outmessage=None):
+    def quality(self, outmessage=None):
         """
         病历质量评分标准卡打印系统
         :return:
@@ -388,13 +355,12 @@ class ReportCard(object):
         # 调用信息格式化程序
         self.format_pain_message()
         draw_quality(self.pain_name, self.pain_id)
-        select = messagebox.askyesno('请选择',f'准备打印，请放入纸张，并确认信息【{self.pain_name}】是否正确？')
+        select = messagebox.askyesno('请选择', f'准备打印，请放入纸张，并确认信息【{self.pain_name}】是否正确？')
         # select = input("准备打印，请放入纸张，并确认信息是否正确？ [Y/n]: ")
         if select:
             print_pain_info()
         else:
             self.out_message.set('你取消了打印!')
-
 
     def get_child_windows(self, parent):
         """

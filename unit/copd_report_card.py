@@ -286,8 +286,9 @@ class GetMessage(object):
         frame2.pack()
         frame2.place(x=10, y=60)
         tk.Label(frame2, text='选择姓名:', width=10, height=1).pack()
-        self.name_lst = [('罗玉龙', 0), ('刘益宏', 1), ('李小琴', 2), ('彭育欢', 3), ('朱庆霞', 4), ('周  莉', 5)]
+        self.name_lst = [('罗玉龙', 0), ('刘益宏', 1), ('李小琴', 2), ('彭育欢', 3), ('朱庆霞', 4), ('周   莉', 5)]
         self.v = tk.IntVar()
+        self.v.set(8)
         for name, value in self.name_lst:
             tk.Radiobutton(frame2, text=name, value=value, width=10, height=1, variable=self.v).pack()
         # frame3，为输出信息框；
@@ -348,8 +349,12 @@ class GetMessage(object):
     def start_format(self):
         for i in range(6):
             if self.v.get() == i:
-                self.doctor_name = self.name_lst[i][0]
+                self.doctor_name = self.name_lst[1][0]
                 self.out_message.set('')
+                break
+            if i == 5:
+                messagebox.showwarning('警告',"请先选择姓名！")
+                return
         # 启用多线程，避免主窗口无响应
         new_t = threading.Thread(target=self.get_info)
         new_t.setDaemon(True)
@@ -428,7 +433,10 @@ class GetMessage(object):
             # print(f"日志路径不存在！创建中. . .")
             os.mkdir(path_)
         # 日志保存路径
+
         save_path = f"{path_}{self.doctor_name}.报卡日志.{self.out_day_for_path[:-3]}.xlsx"
+
+
 
         # 报路径
         path_ = f'D:\\重庆居民慢阻肺报告卡\\{self.out_day_for_path[:-3]}\\'

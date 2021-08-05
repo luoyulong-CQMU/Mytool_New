@@ -9,10 +9,8 @@ from docx.oxml.ns import qn
 from docx import Document
 
 
-
-class PrindPainIdCard(object):
+class HospitalizationCertificate(object):
     """
-
     自动填写住院证的类
     """
     painName ="Name"
@@ -198,5 +196,5 @@ class PrindPainIdCard(object):
         os.startfile(self.save_path)
 
 if __name__ == '__main__':
-    obj = PrindPainIdCard()
+    obj = HospitalizationCertificate()
     obj.draw_mainwindow()
