@@ -6,7 +6,7 @@
 import tkinter as tk
 from tkinter import messagebox, ttk, Scrollbar
 from PIL import Image, ImageTk
-# import ctypes
+# # import ctypes
 from unit.OutpatientLog import *
 from unit.BloodGas import *
 from unit.discharge import *
@@ -39,44 +39,35 @@ class CaseTool(object):
         width = 570
         height = 250
         alignstr = '%dx%d+%d+%d' % (width, height, (screenwidth - width) / 2, (screenheight - height) / 2)
-
         top_level.geometry(alignstr)
-
         out_message = tk.StringVar()
         out_message.set('住院证打印需要填写医生姓名')
         frame1 = tk.Frame(top_level, width=525, height=160, borderwidth=2, padx=0, pady=0, relief="sunken")
-        frame1.pack()
-        frame1.place(x=20, y=20)
-        btn_report = tk.Button(frame1, text='感染病例报卡', font=('Arial', 10), width=15, height=2,
-                               activebackground='Lightblue',
-                               command=lambda: ReportCard().report_card(out_message))
-        btn_quality = tk.Button(frame1, text='病案质量填充', font=('Arial', 10), width=15, height=2,
-                                activebackground='Lightblue',
-                                command=lambda: ReportCard().quality(out_message))
-        btn_printID = tk.Button(frame1, text='住院证打印', font=('Arial', 10), width=15, height=2,
-                                activebackground='Lightblue',
-                                command=lambda: PrindPainIdCard().draw_mainwindow(out_message))
-        btn_Game = tk.Button(frame1, text='GameTest', font=('Arial', 10), width=15, height=2,
-                             activebackground='Lightblue', command=lambda: GameSelect().draw_main_window(top_level))
-        btn_report.pack()
-        btn_quality.pack()
-        btn_printID.pack()
-        btn_Game.pack()
-        btn_report.place(x=50, y=10)
-        btn_quality.place(x=330, y=10)
-        btn_printID.place(x=50, y=90)
-        btn_Game.place(x=330, y=90)
-
         frame2 = tk.Frame(top_level, width=525, height=40, borderwidth=2, padx=0, pady=0, relief="sunken")
-        frame2.pack()
+        frame1.place(x=20, y=20)
         frame2.place(x=20, y=190)
+        btn_1 = tk.Button(frame1, text='感染病例报卡', font=('Arial', 10), width=15, height=2,
+                          activebackground='Lightblue',
+                          command=lambda: ReportCard().report_card(out_message))
+        btn_2 = tk.Button(frame1, text='病案质量填充', font=('Arial', 10), width=15, height=2,
+                          activebackground='Lightblue',
+                          command=lambda: ReportCard().quality(out_message))
+        btn_3 = tk.Button(frame1, text='住院证打印', font=('Arial', 10), width=15, height=2,
+                          activebackground='Lightblue',
+                          command=lambda: PrindPainIdCard().draw_mainwindow(out_message))
+        btn_4 = tk.Button(frame1, text='GameTest', font=('Arial', 10), width=15, height=2,
+                          activebackground='Lightblue', command=lambda: GameSelect().draw_main_window(top_level))
+        btn_1.place(x=50, y=10)
+        btn_2.place(x=330, y=10)
+        btn_3.place(x=50, y=90)
+        btn_4.place(x=330, y=90)
         message_lab = tk.Label(frame2, width='57', height=1, textvariable=out_message, justify='left')
-        message_lab.pack()
         message_lab.place(x=1, y=3)
         top_level.protocol("WM_DELETE_WINDOW", lambda: self.exit_window(main_window=main_window, top_level=top_level))
         top_level.mainloop()
 
-    def exit_window(self, main_window, top_level):
+    @staticmethod
+    def exit_window(main_window, top_level):
         try:
             main_window.state('normal')
         except:
@@ -84,13 +75,13 @@ class CaseTool(object):
         top_level.destroy()
 
 
-class Setting_window(object):
+class SettingWindow(object):
     """
     程序设置界面
     """
 
     def __init__(self):
-        pass
+        self.tree = None
 
     def draw_main_window(self, main_window):
         """
@@ -119,42 +110,34 @@ class Setting_window(object):
         height1 = 500
         alignstr = '%dx%d+%d+%d' % (width1, height1, (screenwidth - width1) / 2, (screenheight - height1) / 2)
         top_level.geometry(alignstr)
-        fram1 = tk.Frame(top_level, borderwidth=2, width=500, height=50, relief="sunken")
-        fram2 = tk.Frame(top_level, borderwidth=2, width=500, height=370, relief="sunken")
-        fram3 = tk.Frame(top_level, borderwidth=2, width=130, height=420, relief="sunken")
-        fram1.place(x=30, y=30)
-        fram2.place(x=30, y=100)
-        fram3.place(x=550, y=30)
+        frame_1 = tk.Frame(top_level, borderwidth=2, width=500, height=50, relief="sunken")
+        frame_2 = tk.Frame(top_level, borderwidth=2, width=500, height=370, relief="sunken")
+        frame_3 = tk.Frame(top_level, borderwidth=2, width=130, height=420, relief="sunken")
+        frame_1.place(x=30, y=30)
+        frame_2.place(x=30, y=100)
+        frame_3.place(x=550, y=30)
         doctor_name = tk.StringVar()
         doctor_name.set(f'默认姓名(输入要修改的内容点击修改):')
-        name_lab = tk.Label(fram1, width=30, height=1, textvariable=doctor_name)
+        name_lab = tk.Label(frame_1, width=30, height=1, textvariable=doctor_name)
         name_lab.place(relx=0.02, rely=0.1)
-        modify_enty = tk.Text(fram1, width=20, height=1)
-        modify_enty.insert('end', name)
-        modify_enty.place(relx=0.6, rely=0.2)
-        modify_btn = tk.Button(fram3, width=10, height=1, text="修改姓名",
-                               command=lambda: self.update_name(modify_enty))
-        modify_btn.place(relx=0.1, rely=0.01)
-        update_btn = tk.Button(fram3, width=10, height=1, text="检查更新",
-                               command=Update().check_version)
-        update_btn.place(relx=0.1, rely=0.15)
-
-        add_keywords_btn = tk.Button(fram3, width=10, height=1, text="增加关键字", command=self.add_key_words)
-        add_keywords_btn.place(relx=0.1, rely=0.3)
-
-        add_chief_btn = tk.Button(fram3, width=10, height=1, text="增加主诉", command=self.add_chief)
-        add_chief_btn.place(relx=0.1, rely=0.45)
-
-        modify_chief_btn = tk.Button(fram3, width=10, height=1, text="修改", command=self.modify)
-        modify_chief_btn.place(relx=0.1, rely=0.6)
-
-        del_chief_btn = tk.Button(fram3, width=10, height=1, text="删除", command=self.del_)
-        del_chief_btn.place(relx=0.1, rely=0.75)
-
-        save_btn = tk.Button(fram3, width=10, height=1, text="帮助", command=self.help)
-        save_btn.place(relx=0.1, rely=0.9)
-
-        self.tree = ttk.Treeview(fram2, height=16)
+        get_name_edit = tk.Text(frame_1, width=20, height=1)
+        get_name_edit.insert('end', name)
+        get_name_edit.place(relx=0.6, rely=0.2)
+        btn_1 = tk.Button(frame_3, width=10, height=1, text="修改姓名", command=lambda: self.update_name(get_name_edit))
+        btn_2 = tk.Button(frame_3, width=10, height=1, text="检查更新", command=Update().check_version)
+        btn_3 = tk.Button(frame_3, width=10, height=1, text="增加关键字", command=self.add_key_words)
+        btn_4 = tk.Button(frame_3, width=10, height=1, text="增加主诉", command=self.add_chief)
+        btn_5 = tk.Button(frame_3, width=10, height=1, text="修改", command=self.modify)
+        btn_6 = tk.Button(frame_3, width=10, height=1, text="删除", command=self.del_)
+        btn_7 = tk.Button(frame_3, width=10, height=1, text="帮助", command=self.help)
+        btn_1.place(relx=0.1, rely=0.01)
+        btn_2.place(relx=0.1, rely=0.15)
+        btn_3.place(relx=0.1, rely=0.3)
+        btn_4.place(relx=0.1, rely=0.45)
+        btn_5.place(relx=0.1, rely=0.6)
+        btn_6.place(relx=0.1, rely=0.75)
+        btn_7.place(relx=0.1, rely=0.9)
+        self.tree = ttk.Treeview(frame_2, height=16)
         self.tree.column("#0", width=465, anchor="center")
         keywords_and_chief = DiagMatch().read_db()  # keywords_and_chief 为数据库返回的列表;包含多个元组（keywords,chief）
         sum = len(keywords_and_chief)
@@ -170,24 +153,23 @@ class Setting_window(object):
             except:
                 messagebox.showwarning('警告', f'【{diag}】还没有添加随机主诉！')
         # 滚动条
-        vbar = Scrollbar(fram2, orient='vertical', command=self.tree.yview, width=20)
-        self.tree.configure(yscrollcommand=vbar.set)
+        scroll_bar = Scrollbar(frame_2, orient='vertical', command=self.tree.yview, width=20)
+        self.tree.configure(yscrollcommand=scroll_bar.set)
         # # 选中行
-        self.tree.bind('<<TreeviewSelect>>', self.selectTree(self.tree))
-        s = ttk.Style()
-        s.configure('Treeview', rowheight=20)
+        self.tree.bind('<<TreeviewSelect>>', self.select_tree(self.tree))
+        ttk.Style().configure('Treeview', rowheight=20)  # 设置每一行的高度;
         self.tree.pack(side='left')
-        vbar.pack(side='right', fill='y')
+        scroll_bar.pack(side='right', fill='y')
         top_level.protocol("WM_DELETE_WINDOW", lambda: self.exit_window(main_window=main_window, top_level=top_level))
         top_level.mainloop()
 
-    def update_name(self, Edit):
+    def update_name(self, edit_box):
         '''
         调用get方法获取输入值，因text控件为多行，需要strip取掉\n
-        :param Edit: tk.Text控件
+        :param edit_box: tk.Text控件
         :return:
         '''
-        new_name = Edit.get('0.0', 'end').strip()
+        new_name = edit_box.get('0.0', 'end').strip()
         self.database.update_data(new_name=new_name)
 
     def help(self):
@@ -225,26 +207,26 @@ class Setting_window(object):
         client_btn.grid(row=1, column=1)
         top_level.mainloop()
 
-    def add_key_words_client(self, Edit, window):
+    def add_key_words_client(self, edit_box, current_window):
         '''
 
-        :param Edit: tk.Text控件；
-        :param window: 当前窗口，以调用销毁事件
+        :param edit_box: tk.Text控件；
+        :param current_window: 当前窗口，以调用销毁事件
         :return:
         '''
-        key_words = Edit.get('0.0', 'end').strip()
+        key_words = edit_box.get('0.0', 'end').strip()
         self.tree.insert("", 0, key_words, text=key_words)
         DiagMatch().add_key_words(key_words)
         self.tree.update()
-        window.destroy()
+        current_window.destroy()
 
     def add_chief(self):
         '''
         添加随机主诉
         :return:
         '''
-        curItem = self.tree.focus()  # 获取当前选择的节点
-        father_item = self.tree.parent(curItem)  # 获取父节点
+        current_item = self.tree.focus()  # 获取当前选择的节点
+        father_item = self.tree.parent(current_item)  # 获取父节点
         if father_item == "" or father_item is None:  # 如果为空，则判断为根节点，则选中的是关键词
             top_level = tk.Toplevel()
             # top_level.wm_attributes('-topmost', 1)
@@ -261,38 +243,38 @@ class Setting_window(object):
             lab.place(relx=0.01, rely=0.1)
             text = tk.Text(top_level, width=20, height=2)
             text.place(relx=0.1, rely=0.4)
-            client_btn = tk.Button(top_level, width=10, height=1, text='确定',
+            ensure_btn = tk.Button(top_level, width=10, height=1, text='确定',
                                    command=lambda: self.add_chief_client(text, top_level))
-            client_btn.place(relx=0.6, rely=0.4)
+            ensure_btn.place(relx=0.6, rely=0.4)
             top_level.mainloop()
         else:
             messagebox.showwarning('警告', '请选择父节点再添加主诉！')
 
-    def add_chief_client(self, Edit, window):
+    def add_chief_client(self, edit_box, current_window):
         '''
 
-        :param Edit: tk.Text控件
-        :param window: 当前窗口
+        :param edit_box: tk.Text控件
+        :param current_window: 当前窗口
         :return:
         '''
-        curItem = self.tree.focus()  # 获取当前选中节点
+        current_item = self.tree.focus()  # 获取当前选中节点
         # print(f"当前选中节点：{curItem}")
-        father_item = self.tree.parent(curItem)  # 获取节点的父节点
+        father_item = self.tree.parent(current_item)  # 获取节点的父节点
         if father_item == "" or father_item is None:  # 判断是否为根节点，如果父节点为空则是跟节点
-            new_chief = Edit.get('0.0', 'end').strip()
-            DiagMatch().add_chief(curItem, new_chief)
-            self.tree.insert(curItem, 0, text=new_chief)
+            new_chief = edit_box.get('0.0', 'end').strip()
+            DiagMatch().add_chief(current_item, new_chief)
+            self.tree.insert(current_item, 0, text=new_chief)
         else:
             messagebox.showwarning('警告', '请选择父节点再添加主诉！')
-        window.destroy()
+        current_window.destroy()
 
     def modify(self):
         '''
         修改节点内容，包含修改关键词以及主诉
         :return:
         '''
-        curItem = self.tree.focus()
-        lab_text = "关键字" if self.tree.parent(curItem) == "" else "随机主诉"
+        current_item = self.tree.focus()
+        lab_text = "关键字" if self.tree.parent(current_item) == "" else "随机主诉"
         top_level = tk.Toplevel()
         # top_level.wm_attributes('-topmost', 1)
         top_level.title(f'修改{lab_text}')
@@ -304,31 +286,30 @@ class Setting_window(object):
         alignstr = '%dx%d+%d+%d' % (width1, height1, (screenwidth - width1) / 2, (screenheight - height1) / 2)
         top_level.geometry(alignstr)
         lab = tk.Label(top_level, text='在下方输入要修改的内容', width=40, height=1)
-        lab.place(relx=0.01, rely=0.1)
-        text = tk.Text(top_level, width=20, height=2)
-        text.place(relx=0.1, rely=0.4)
         client_btn = tk.Button(top_level, width=10, height=1, text='确定',
                                command=lambda: self.modify_client(text, top_level))
+        text = tk.Text(top_level, width=20, height=2)
+        lab.place(relx=0.01, rely=0.1)
+        text.place(relx=0.1, rely=0.4)
         client_btn.place(relx=0.6, rely=0.4)
         top_level.mainloop()
 
-    def modify_client(self, Edit, window):
+    def modify_client(self, edit_box, current_window):
         '''
-
-        :param Edit: Text控件
-        :param window: 当前窗体
+        :param edit_box: Text控件
+        :param current_window: 当前窗体
         :return:
         '''
-        curItem = self.tree.focus()
-        item_text = self.tree.item(curItem)['text'] # 这里需要调用item方法才能获取到text内容，原因次节点不能直接获取text；
-        father_item = self.tree.parent(curItem)  # 获取节点的父节点
-        new_item = Edit.get('0.0', 'end').strip()
-        self.tree.item(curItem, text=new_item)
+        current_item = self.tree.focus()
+        item_text = self.tree.item(current_item)['text']  # 这里需要调用item方法才能获取到text内容，原因次节点不能直接获取text；
+        father_item = self.tree.parent(current_item)  # 获取节点的父节点
+        new_item = edit_box.get('0.0', 'end').strip()
+        self.tree.item(current_item, text=new_item)
         if father_item == "" or father_item is None:  # 如果为空，则判断为根节点，则选中的是关键词
-            DiagMatch().update_keywords(curItem, new_item)
+            DiagMatch().update_keywords(current_item, new_item)
         else:
             DiagMatch().update_chief(father_item, item_text, new_item)
-        window.destroy()
+        current_window.destroy()
 
     def del_(self):
         '''
@@ -337,7 +318,7 @@ class Setting_window(object):
         '''
         select_item = self.tree.focus()
         father_item = self.tree.parent(select_item)
-        if father_item == "" or father_item is None: # 为空则表示选中的是跟节点
+        if father_item == "" or father_item is None:  # 为空则表示选中的是跟节点
             choice = messagebox.askyesno("警告！", "确定删除关键字？删除关键字会将其下所有的随机主诉删除！")
             # 删除关键字及下所有的内容
             if choice:
@@ -349,8 +330,8 @@ class Setting_window(object):
             select_item = self.tree.focus()
             select_item_text = self.tree.item(select_item)['text']
             self.tree.delete(select_item)
-            print(father_item,select_item_text)
-            DiagMatch().del_chief(father_item,select_item_text)
+            print(father_item, select_item_text)
+            DiagMatch().del_chief(father_item, select_item_text)
 
     def exit_window(self, main_window, top_level):
         try:
@@ -360,7 +341,7 @@ class Setting_window(object):
         top_level.destroy()
 
     # 鼠标选中一行回调
-    def selectTree(self, tree):
+    def select_tree(self, tree):
         for item in tree.selection():
             item_text = tree.item(item, "values")
             print(item_text)
@@ -379,12 +360,12 @@ def blood_gas():
 
 
 def clean_cache():
-    dirpath = "./cache/"
+    path_ = "./cache/"
     # 判断文件是否存在
-    files = os.listdir(dirpath)
+    files = os.listdir(path_)
     for file in files:
         try:
-            file_path = dirpath + file
+            file_path = path_ + file
             os.remove(file_path)
         except:
             pass
@@ -392,22 +373,27 @@ def clean_cache():
 
 
 def change_arrow(button):
+    """
+    修改鼠标样式
+    实现鼠标移动到控件上，修改鼠标样式
+    :param button: 按钮
+    :return:
+    """
     button.configure(cursor='hand2')
-    window.update()
+    # window.update()
 
 
-if __name__ == '__main__':
-    Update().check_version()
+def main():
     window = tk.Tk()
     window.configure(bg='#393939')
     window.title('Mytool4.0')
     window.resizable(width=False, height=False)
-    screenwidth = window.winfo_screenwidth()
-    screenheight = window.winfo_screenheight()
+    screen_width = window.winfo_screenwidth()
+    screen_height = window.winfo_screenheight()
     width = 570
     height = 250
-    alignstr = '%dx%d+%d+%d' % (width, height, (screenwidth - width) / 2, (screenheight - height) / 2)
-    window.geometry(alignstr)
+    align_str = '%dx%d+%d+%d' % (width, height, (screen_width - width) / 2, (screen_height - height) / 2)
+    window.geometry(align_str)
     img_1 = tk.PhotoImage(file="resources/main_1.png")
     img_2 = tk.PhotoImage(file="resources/main_2.png")
     img_3 = tk.PhotoImage(file="resources/main_3.png")
@@ -437,7 +423,7 @@ if __name__ == '__main__':
     bt6 = tk.Button(window, text='程序设置', width=200, height=50, image=img_6, relief='sunken',
                     bg='#282828',
                     activebackground='#1f5383',
-                    command=lambda: Setting_window().draw_main_window(main_window=window))
+                    command=lambda: SettingWindow().draw_main_window(main_window=window))
     bt1.place(x=50, y=20)
     bt2.place(x=50, y=90)
     bt3.place(x=50, y=160)
@@ -452,3 +438,8 @@ if __name__ == '__main__':
     bt6.bind("<Enter>", change_arrow(bt6))
     window.protocol("WM_DELETE_WINDOW", clean_cache)
     window.mainloop()
+
+
+if __name__ == '__main__':
+    Update().check_version()
+    main()
